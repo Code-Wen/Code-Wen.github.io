@@ -10,5 +10,5 @@ main:
   #- title: "Hiking"
   #  url: /hikes/
 
-  - title: "Misc"
-    url: /misc/
+  #- title: "Misc"
+  #  url: /misc/
