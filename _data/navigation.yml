@@ -7,8 +7,8 @@ main:
   - title: "Projects"
     url: /projects/
 
-  - title: "Hiking"
-    url: /hikes/
+  #- title: "Hiking"
+  #  url: /hikes/
 
   - title: "Misc"
     url: /misc/
