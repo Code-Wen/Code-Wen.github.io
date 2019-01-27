@@ -7,11 +7,11 @@
 
 # Site Settings
 locale                   : "en-US"
-title                    : "Jianhong (May) Shen"
+title                    : "Chenxu Wen"
 title_separator          : "-"
-name                     : &name "May"
+name                     : &name "Chenxu"
 description              : &description "personal description"
-url                      : https://mayjh.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
+url                      : https://code-wen.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
 repository               : "mayjh/mayjh.github.io"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
@@ -78,13 +78,13 @@ analytics:
 
 # Site Author
 author:
-  name             : "Jianhong (May) Shen 沈建虹"
+  name             : "Chenxu Wen 文晨旭"
   avatar           : "profile.png"
   bio              : "A quantitative psychologist by training, a data scientist by heart and by trade."
-  location         : "Nashville, TN"
+  location         : "Riverside, CA"
   employer         :
   googlescholar    : https://scholar.google.com/citations?user=F9Hf2RQAAAAJ&hl=en
-  email            : j.shen33@gmail.com
+  email            : chenxu.wen.math@gmail.com
   uri              :
   bitbucket        :
   codepen          :
@@ -92,10 +92,10 @@ author:
   flickr           :
   facebook         :
   foursquare       :
-  github           : "mayjh"
+  github           : "Code-Wen"
   google_plus      :
   keybase          :
-  instagram        : "may_jh33"
+  instagram        : 
   lastfm           :
   linkedin         : "jianhong-may-shen/"
   orcid            :
@@ -104,7 +104,7 @@ author:
   stackoverflow    : # http://stackoverflow.com/users/123456/username
   steam            :
   tumblr           :
-  twitter          : "mayshen_33"
+  twitter          :
   vine             :
   weibo            :
   xing             :
