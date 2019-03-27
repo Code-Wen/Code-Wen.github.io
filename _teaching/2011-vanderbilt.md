@@ -1,5 +1,5 @@
 ---
-title: "Teaching Assistant"
+title: "Teaching Assistant, Vanderbilt University, 2011-2014"
 collection: teaching
 type: "Undergraduate course"
 permalink: /teaching/2011-vanderbilt
