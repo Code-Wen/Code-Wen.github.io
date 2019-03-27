@@ -9,40 +9,38 @@ redirect_from:
 
 {% include base_path %}
 
-Quantitative psychologist with 8 years of data experience. Seeking to drive real-world impact. Highly skilled in machine learning, data visualization, experimental design, verbal and written communications.
++ Visiting Assistant Professor with 7+ years of experience teaching and researching mathematics.   
++ Skilled in R, Python, SQL and machine learning algorithms.  
++ Experience with pandas, scikit-learn, tidyverse, mlr, etc.  
++ Interested in using analytical skills to drive real-world solutions.  
++ Actively seeking data analyst/scientist positions.  
 
 Experience
 ========
 
-* **2017-10 - present, Research Data Scientist, axialHealthcare**
-  * Lead projects to develop and operationalize end-to-end interpretable machine learning models to predict outcomes such as opioid overdose and relapse, using R, BigQuery, and Python. Improved both precision and sensitivity by more than 20%.
-  * Established standard operating procedures for R&D practices via R packaging.
-  * Write papers, blog posts, and conference abstracts to promote company image.
+* **2016-09 - present, Visiting Assistant Professor, UC Riverside**
+ * Learned R, Python, SQL and obtained DataCamp career track certificates including Data Scientist with R, Data Scientist with Python, and Python Programmer
+ * Taught introductory and advanced courses such as Pre-Calculus, Calculus, Multi-Variable Calculus, Linear Algebra, Ordinary and Partial Differential Equations, Optimization Theory, Number Theory, Fourier Analysis (*average teaching evaluation 4.2 out of 5.0)
+ * Published 4 articles in peer reviewed journals
+ * Organized events such as American Mathematical Society Special Session on Advances on Operator Algebras 2017 and the Putnam Math Competition at UCR
+ * Recognized by the Math Department with Outstanding Visiting Assistant Professor Award 
 
-* **2012-08 - 2017-08, Research and Teaching Assistant, Vanderbilt University**
-  * Model the mechanisms of individual differences in visual categorization, using JavaScript, CSS, Html, MySQL, R, JAGS, Python, and STAN.
-  * Developed and evaluated the Vanderbilt Bird Expertise Test using the Item Response Theory, used JavaScript, CSS, Html, MySQL, R, and JAGS.
-  * Authored 7 methodological and substantive papers (2 in revision, 1 manuscript), and 6 conference abstracts.
-  * Served as teaching assistant in courses such as Statistical Analysis, Quantitative Methods, and Experimental Design.
-  * Invited to lecture on topics such as psychometric modeling, cognitive modeling, programming web-based experiments, college teaching etc.
+* **2010-08 - 2016-05, Research and Teaching Assistant, Vanderbilt University**
+  * Teaching Assistant for Calculus, Linear Algebra, Differential Equations, Functional Analysis (graduate course)
+  * Studied Functional Analysis, a division on the study of various function spaces, and published 2 journal articles on Journal of Functional Analysis and the International Journal of Mathematics
+  * Presented work at international conferences such as American Mathematical Society Sectional Meeting, Noncommutative Geometry and Operator Algebras, Great Plains Operator Theory Symposium, The Mathematical Symposium on Modern Analysis and Applications
 
-* **2010-08 - 2012-07, Research and Teaching Assistant, Peking University**
-  * Studied perception, specifically face adaptation (authored 1 paper) and perceptual learning, using Matlab and SPSS.
-  * Teaching assistant in Signal Detection Theory.
-  * Residential Assistant/Adviser in PKU-Yale Joint Program.
+
 
 Education
 ========
 
-* **2012-08 - 2018-05, Ph.D. of Psychology, Vanderbilt University**
-  * **Major:** Cognition and Cognitive Neuroscience
-  * **Minor:** Graduate Quantitative Methods
-  * **Thesis:** Understanding Real-World Visual Expertise in the Multidimensional Space
-  * **Adviser:** Dr. Thomas J. Palmeri
+* **2010-08 - 2016-05, Ph.D. of Mathematics, Vanderbilt University**
+  * **Thesis:** Amenable Extensions in II1 Factors
+  * **Adviser:** Dr. Jesse Peterson
 
-* **2008-08 - 2012-07, B.S. of Psychology, Peking University**
-  * **Thesis:** Understanding the Neural Mechanisms of Motion Perceptual Learning
-  * **Adviser:** Dr. Fang Fang
+* **2006-08 - 2010-07, B.S. of Mathematics, Tsinghua University**
+
 
 Publications
 ========
@@ -66,35 +64,35 @@ Teaching
 
 Awards
 ========
+* 2018, Outstanding Visiting Assistant Professor Award, UC Riverside
+* 2014, Graduate Student Travel Grant, Vanderbilt University
+* 2010, Fellowship and Tuition Scholarship, Vanderbilt University 
+* 2009, Scholarship in Academics, Tsinghua University
+* 2008, National Scholarship, Tsinghua University
+* 2007, National Scholarship, Tsinghua University
 
-* 2016, Lisa M. Quesenberry Foundation Scholarship, Vanderbilt University
-* 2016, IU Young Scientist Award from the Society for Mathematical Psychology
-* 2015, The William F. Hodges Teaching Assistant Award, Vanderbilt University
-* 2009, National Scholarship, Peking University
-* 2008, Scholarship for Excellent Freshman by Peking University
 
 Skills
 ========
 
-* Data Collection and Analysis: R, Matlab, JavaScript, CSS, Html, SAS, Python, SQL
-* Computational Modeling: JAGS, WinBUGS, STAN, Matlab
-* Data Report: R Markdown, R ggplot2, Git, PowerPoint, Word, Illustrator  
+* Data Collection and Analysis: R, Python, SQL
+* Data Report: R Markdown, R ggplot2, Git, PowerPoint, Word, LaTex
 
 Certifications
 ========
 
-* 2018-09, DataCamp – [Python Programming Track](https://drive.google.com/open?id=1RRuxLI6voAC-0IskPW9NRoMsCDA6QMXO)
-* 2018-01, DataCamp – [Machine Learning with R Track](https://drive.google.com/open?id=1b1m7wa4sNxFCwCQ99Mf4Rr6LnVD2Jk0s)
-* 2017-05, Vanderbilt University – [Graduate Quantitative Methods Minor](https://drive.google.com/file/d/0ByWLjGvnG6aHd2pWNzV3MDFDZkU/view)
-* 2017-03, SAS Institute – [SAS Certified Base Programmer for SAS 9](https://drive.google.com/file/d/0ByWLjGvnG6aHOElBTzk4RFdQNHM/view)
-* 2014-04, Vanderbilt University – [Certificate in College Teaching](https://drive.google.com/open?id=0ByWLjGvnG6aHZ1F0djhLUTlpcTQ)
+* DataCamp [Data Analyst with Python Track](https://drive.google.com/file/d/19c0jlVdYopEbsMPPajLQ-MLummaRMW-I/view?usp=sharing)  
+* DataCamp [Data Scientist with Python Track](https://drive.google.com/file/d/1ukAEcbdyVF2TwXgPYVmaryHPCoRIawVR/view?usp=sharing)  
+* DataCamp [Data Scientist with R Track](https://drive.google.com/file/d/1dINe7yqnuCWd-PUpufaeO0DV8tYx-OEL/view?usp=sharing)  
+* DataCamp [Python Programmer Track](https://drive.google.com/file/d/18d7ttjW6k4eobXQHwo2t9OfBm14zE2g_/view?usp=sharing)  
+* DataCamp [R Programming Track](https://drive.google.com/file/d/1ONrGqDW9edB33w9wYxujXnd9tjnkw9VJ/view?usp=sharing)
+* Stanford University [Statistical Learning Online Course](https://drive.google.com/file/d/1-VokLW7kQZnYUUOpiObonrRD1CQtUle2/view?usp=sharing)
 
 Service and leadership
 ======
-* Co-organizer, Data Science Nashville Meetup, 2017-present
-* Co-organizer, Greater Nashville Healthcare Analytics Meetup, 2017-present
-* Tutor, Nashville Adult Literacy Council, 2017-present
-* Reviewer, Psychonomic Bulletin & Review, 2017
-* Committee Member, Vanderbilt University Undergraduate Honors Committee, 2017
-* Judge, Vanderbilt University Undergraduate Research Fair, 2016
-* Expert TA Panelist, Vanderbilt University Teaching Assistant Orientation, 2014
+* Reviewer for zbMATH, Fall 2016 - Present
+* Co-organizer: Special Session on Advances on Operator Algebras, Fall Western Sectional Meeting
+University of California, Riverside, CA, November 4-5, 2017
+* Co-organizer: Operator Algebra Seminar at UC, Riverside, Fall 2016 - Present
+* Co-organizer: Seminar for Putnam Competition, Fall 2017 - Present
+
