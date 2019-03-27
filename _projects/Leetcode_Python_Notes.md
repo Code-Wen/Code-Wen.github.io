@@ -1,7 +1,7 @@
 ---
 title: "Leetcode Algorithm Questions in Python"
-excerpt: "A good way of learning is through practice. This is my daily log of practicing Leetcode problems in Python."
-collection: notes
+excerpt: "A good way of learning is through practice. This is my log of practicing Leetcode problems in Python."
+collection: projects
 ---
 
 ## 38. Count and Say
