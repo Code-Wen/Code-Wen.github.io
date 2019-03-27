@@ -8,6 +8,8 @@ redirect_from:
 ---
 
 {% include base_path %}
+Summary
+========
 
 + Visiting Assistant Professor with 7+ years of experience teaching and researching mathematics.   
 + Skilled in R, Python, SQL and machine learning algorithms.  
