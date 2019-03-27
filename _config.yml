@@ -13,7 +13,7 @@ name                     : &name "Chenxu"
 description              : &description "personal description"
 url                      : https://code-wen.github.io # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : "" # the subpath of your site, e.g. "/blog"
-repository               : "mayjh/mayjh.github.io"
+repository               : "Code-Wen/Code-Wen.github.io"
 teaser                   :  # filename of teaser fallback teaser image placed in /images/, .e.g. "500x300.png"
 breadcrumbs              : false # true, false (default)
 words_per_minute         : 160
@@ -80,10 +80,10 @@ analytics:
 author:
   name             : "Chenxu Wen 文晨旭"
   avatar           : "profile.png"
-  bio              : "A quantitative psychologist by training, a data scientist by heart and by trade."
+  bio              : "A mathematician by training, a data scientist by heart and by trade."
   location         : "Riverside, CA"
   employer         :
-  googlescholar    : https://scholar.google.com/citations?user=F9Hf2RQAAAAJ&hl=en
+  googlescholar    : https://scholar.google.ca/citations?user=UsipIycAAAAJ&hl=en
   email            : chenxu.wen.math@gmail.com
   uri              :
   bitbucket        :
@@ -97,7 +97,7 @@ author:
   keybase          :
   instagram        : 
   lastfm           :
-  linkedin         : "jianhong-may-shen/"
+  linkedin         : "chenxu-wen-244825a5/"
   orcid            :
   pinterest        :
   soundcloud       :
