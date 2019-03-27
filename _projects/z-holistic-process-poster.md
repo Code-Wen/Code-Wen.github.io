@@ -1,9 +1,0 @@
----
-title: "The perception of a face can be greater than the sum of its parts"
-excerpt: "We quantified holistic processing in faces with different configural information, used R and Matlab.<br/>"
-collection: projects
----
-
-<img src='/images/APCVposter.jpg'>
-
-Holistic processing is often used as a construct to characterize face recognition. An important recent study by Gold, Mundy, and Tjan (2012) quantified holistic processing by computing a facial-feature integration index derived from an ideal observer model. This index was mathematically defined as the ratio of the psychophysical contrast sensitivities squared for recognizing a whole face versus the sum of contrast sensitivities squared for individual face parts (left eye, right eye, nose, andmouth). They observed that this index was not significantly different from 1, leading to the provocative conclusion that the perception of a face is no more than the sum of its parts. What may not be obvious to all readers of this work is that these conclusions were based on a collection of faces that shared essentially the same configuration of face parts. We tested whether the facial-feature integration index would also equal 1 when faces have a range of configurations mirroring the range of variability in real-world faces, using the same experimental procedure and calculating the same integration index asGold et al.When tested on faces with the same configuration, we also observed an integration index similar to what Gold et al. reported. But when tested on faces with variable configurations, we observed an integration index significantly greater than 1. Combing our results with those of Gold et al. further clarifies the theoretical construct of holistic processing in face recognition and what it means for the whole to be greater than the sum of its parts.
