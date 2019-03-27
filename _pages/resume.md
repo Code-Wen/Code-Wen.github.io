@@ -21,11 +21,11 @@ Experience
 ========
 
 * **2016-09 - present, Visiting Assistant Professor, UC Riverside**
- * Learned R, Python, SQL and obtained DataCamp career track certificates including Data Scientist with R, Data Scientist with Python, and Python Programmer
- * Taught introductory and advanced courses such as Pre-Calculus, Calculus, Multi-Variable Calculus, Linear Algebra, Ordinary and Partial Differential Equations, Optimization Theory, Number Theory, Fourier Analysis (*average teaching evaluation 4.2 out of 5.0)
- * Published 4 articles in peer reviewed journals
- * Organized events such as American Mathematical Society Special Session on Advances on Operator Algebras 2017 and the Putnam Math Competition at UCR
- * Recognized by the Math Department with Outstanding Visiting Assistant Professor Award 
+  * Learned R, Python, SQL and obtained DataCamp career track certificates including Data Scientist with R, Data Scientist with Python, and Python Programmer
+  * Taught introductory and advanced courses such as Pre-Calculus, Calculus, Multi-Variable Calculus, Linear Algebra, Ordinary and Partial Differential Equations, Optimization Theory, Number Theory, Fourier Analysis (*average teaching evaluation 4.2 out of 5.0)
+  * Published 4 articles in peer reviewed journals
+  * Organized events such as American Mathematical Society Special Session on Advances on Operator Algebras 2017 and the Putnam Math Competition at UCR
+  * Recognized by the Math Department with Outstanding Visiting Assistant Professor Award 
 
 * **2010-08 - 2016-05, Research and Teaching Assistant, Vanderbilt University**
   * Teaching Assistant for Calculus, Linear Algebra, Differential Equations, Functional Analysis (graduate course)
@@ -56,13 +56,13 @@ Talks & Presentations
     {% include archive-single-talk-cv.html %}
   {% endfor %}</ul>
 -->
-<!--
+
 Teaching
 ======
   <ul>{% for post in site.teaching %}
     {% include archive-single-cv.html %}
   {% endfor %}</ul>
--->
+
 
 Awards
 ========
