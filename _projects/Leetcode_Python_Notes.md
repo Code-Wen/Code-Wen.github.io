@@ -36,3 +36,46 @@ class Solution:
         return seq
 ```
 
+## 70. Climbing Stairs
+
+[Link to the problem](https://leetcode.com/problems/climbing-stairs/)
+
+**Analysis:**
+
+1. This is again a recursive process.   
+2. In order to climb *n+1* stairs, one has exactly two possibilities for the previous step: either one reach the *n*th stair, or one reach the *(n-1)*th stair. Thus if we denote by `a(k)` the number of different ways to climb *n* stairs, then we have `a(n+1)=a(n)+a(n-1)` (here we need to assume `n-1>0`). This is the inductive formula!
+3. Set up the initial terms `a(0)=a(1)=1` and use the above inductive formula, we can easily get it done via a simple `for` loop.
+
+```
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        a=[1,1]
+        for k in range(0,n):
+            a.append(a[k]+a[k+1])
+            
+        return a[n]
+```
+
+**Remark:** If one realizes that this is actually the Fibonacci sequence, he could choose to use the explict formula as in [Wikipedia: Fibonacci number](https://en.wikipedia.org/wiki/Fibonacci_number).
+
+## 344. Reverse String
+
+[Link to the problem](https://leetcode.com/problems/reverse-string/)
+
+**Analysis:** Use `head` to store the head of the unchanged part of the list, and use `tail` to store the tail. Then exchange their positions.
+
+```
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+       
+        L=(len(s)+1)//2
+        for k in range(0, L):
+            head=s[k]
+            tail=s[-k-1]
+            s[k]=tail
+            s[-k-1]=head
+
+```
