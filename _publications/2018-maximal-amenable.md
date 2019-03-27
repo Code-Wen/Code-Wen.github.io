@@ -2,7 +2,7 @@
 title: "Maximal amenability of the generator subalgebra in *q*-Gaussian von Neumann algebras"
 collection: publications
 permalink: /publication/2018-maximal-amenable
-date: 2018
+date: 2018-01-01
 venue: 'Journal of Operator Theory'
 paperurl: 'http://www.mathjournals.org/jot/2018-080-001/2018-080-001-007.html'
 

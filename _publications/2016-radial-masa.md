@@ -2,7 +2,7 @@
 title: "Maximal amenability and disjointness for the radial masa"
 collection: publications
 permalink: /publication/2016-radial-masa
-date: 2016
+date: 2016-01-01
 venue: 'Journal of Functional Analysis'
 paperurl: 'https://www.sciencedirect.com/science/article/pii/S0022123615003298'
 

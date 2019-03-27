@@ -2,7 +2,7 @@
 title: "The cup subalgebra has the absorbing amenability property"
 collection: publications
 permalink: /publication/2016-cup-subalgebra
-date: 2016
+date: 2016-01-01
 venue: 'International Journal of Mathematics'
 paperurl: 'https://www.worldscientific.com/doi/10.1142/S0129167X16500130'
 

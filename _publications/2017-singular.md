@@ -2,7 +2,7 @@
 title: "Singularity of the generator subalgebra in q-Gaussian algebras"
 collection: publications
 permalink: /publication/2017-singular
-date: 2017
+date: 2017-01-01
 venue: 'Proceedings of American Mathematical Society'
 paperurl: 'http://www.ams.org/journals/proc/2017-145-08/S0002-9939-2017-13481-9/S0002-9939-2017-13481-9.pdf'
 
