@@ -200,26 +200,26 @@ $(document).ready(function () {
 <pre><code>class Solution:
     def countAndSay(self, n: int) -&gt; str:
         
-        seq=&quot;1&quot;
-        if n&gt;=2:
+        seq = &quot;1&quot;
+        if n &gt;= 2:
             for k in range(0,n-1):
-                list=[i for i in seq]
-                stack=[]
-                while len(list)&gt;0:
-                    a=list[0]
-                    l=0
-                    while len(list)&gt;0 and a==list[0]:
-                        l+=1
+                list = [i for i in seq]
+                stack = []
+                while len(list) &gt; 0:
+                    a = list[0]
+                    l = 0
+                    while len(list) &gt; 0 and a == list[0]:
+                        l += 1
                         list.remove(a)
                     stack.append(str(l)+a)
                     
-                seq=''.join(stack)
+                seq = ''.join(stack)
         return seq</code></pre>
 </div>
 <div id="climbing-stairs" class="section level2">
 <h2>70. Climbing Stairs</h2>
 <p><a href="https://leetcode.com/problems/climbing-stairs/">Link to the problem</a></p>
-<p><strong>Analysis</strong></p>
+<p><strong>Analysis:</strong></p>
 <ol style="list-style-type: decimal">
 <li>This is again a recursive process.<br />
 </li>
@@ -228,12 +228,149 @@ $(document).ready(function () {
 </ol>
 <pre><code>class Solution:
     def climbStairs(self, n: int) -&gt; int:
-        a=[1,1]
+        a = [1,1]
         for k in range(0,n):
             a.append(a[k]+a[k+1])
             
         return a[n]</code></pre>
 <p><strong>Remark:</strong> If one realizes that this is actually the Fibonacci sequence, he could choose to use the explict formula as in <a href="https://en.wikipedia.org/wiki/Fibonacci_number">Wikipedia: Fibonacci number</a>.</p>
+</div>
+<div id="reverse-string" class="section level2">
+<h2>344. Reverse String</h2>
+<p><a href="https://leetcode.com/problems/reverse-string/">Link to the problem</a></p>
+<p><strong>Analysis:</strong> Use <code>head</code> to store the head of the unchanged part of the list, and use <code>tail</code> to store the tail. Then exchange their positions.</p>
+<pre><code>class Solution:
+    def reverseString(self, s: List[str]) -&gt; None:
+        &quot;&quot;&quot;
+        Do not return anything, modify s in-place instead.
+        &quot;&quot;&quot;
+       
+        L = (len(s)+1)//2
+        for k in range(0, L):
+            head = s[k]
+            tail = s[-k-1]
+            s[k] = tail
+            s[-k-1] = head
+</code></pre>
+</div>
+<div id="length-of-last-word" class="section level2">
+<h2>58. Length of Last Word</h2>
+<p><a href="https://leetcode.com/problems/length-of-last-word/">Link to the problem</a></p>
+<p><strong>Analysis:</strong> First use the <code>.strip()</code> method to remove any empty space in the beginning and in the end of the string. Then count how many non-empty letters in the tail (from right to left) until we reach to the first empty space.</p>
+<pre><code>class Solution:
+    def lengthOfLastWord(self, s: str) -&gt; int:
+        k = 0
+        stripped = s.strip()       
+        while k &lt;= len(stripped)-1:
+            if stripped[-k-1] != &quot; &quot;:
+                k += 1
+            else:
+                return k
+        
+        return k</code></pre>
+</div>
+<div id="power-of-two" class="section level2">
+<h2>231. Power of Two</h2>
+<p><a href="https://leetcode.com/problems/power-of-two/">Link to the problem</a></p>
+<p><strong>Analysis:</strong> One can of course do it in a recursive fashion, that is, divide <code>n</code> by 2, check the remainder: if it is non-zero, stop and return <code>False</code>; otherwise, update <code>n=n/2</code> and repeat. If in the end we get <code>n=1</code>, return <code>True</code>.</p>
+<p>However there is an clever one-liner using the bitwise operations such as <code>&amp;</code> and <code>|</code>:</p>
+<pre><code>class Solution:
+    def isPowerOfTwo(self, n: int) -&gt; bool:
+        return n&gt;0 and n&amp;(n-1) == 0</code></pre>
+<p>For a good explaination of the Python bitwise operators, see <a href="https://www.tutorialspoint.com/python/bitwise_operators_example.htm">Here</a>. So the idea of the above solution is: if <code>n&lt;=0</code>, return <code>False</code>. For the second part, <code>n&amp;(n-1)==0</code>, any positive integer <code>n</code> is represented uniquely as a sequence of bits, that is, <code>1</code>s and <code>0</code>s. However, <code>n</code> is a power of 2 if and only if the bit form of <code>n</code> looks like <code>10...0</code>, where there is only a leading <code>1</code>, and the rest are all 0s. In that case, the bit form of <code>n-1</code> is <code>01..1</code>. Therefore the bitwise <em>and</em> operator <code>n&amp;(n-1)</code> will give a sequence of 0s, since at each corresponding position for the bit forms of <code>n</code> and <code>n-1</code>, there is always a <code>0</code> and a <code>1</code>. Meanwhile, if <code>n</code> is not a power of 2, then in the bit form of <code>n</code>, there are at least two <code>1</code>s, say <code>...1...1...</code>. A moment thinking will lead to the conclusion that the bit form of <code>n-1</code> will have <code>1</code> in the first position, as <code>...1...*...</code>, therefore the outcome of <code>n&amp;(n-1)</code> is never 0!</p>
+</div>
+<div id="contains-duplicate" class="section level2">
+<h2>217. Contains Duplicate</h2>
+<p><a href="https://leetcode.com/problems/contains-duplicate/">Link to the problem</a></p>
+<p><strong>Analysis:</strong> Change the list to set, then compare the lengths of the list and the set.</p>
+<pre><code>class Solution:
+    def containsDuplicate(self, nums: List[int]) -&gt; bool:
+        
+        return len(set(nums)) != len(nums)</code></pre>
+</div>
+<div id="count-primes" class="section level2">
+<h2>204. Count Primes</h2>
+<p><a href="https://leetcode.com/problems/count-primes/">Link to the problem</a></p>
+<p><strong>Analysis:</strong></p>
+<ol style="list-style-type: decimal">
+<li>Build a logic list <code>res</code> to store whether the integers for 0 to n-1 are prime or not.</li>
+<li>Initial conditions: 0 and 1 are not primes, so set the first two elements in <code>list</code> to be <code>False</code>, while set the third element (which corresponds to 2) to be <code>True</code>.</li>
+<li>Using a <code>for</code> loop, we update the list <code>res</code>: if <code>i</code> is a prime, then <code>2*i</code>, <code>3*i</code>, etc. are all non-prime.</li>
+<li>We count how many <code>True</code> are in <code>res</code>.</li>
+</ol>
+<pre><code>class Solution:
+    def countPrimes(self, n: int) -&gt; int:
+            if n &lt;= 2:
+                return 0
+            res = [True] * n
+            res[0] = res[1] = False
+            for i in range(2, n):
+                if res[i] == True:
+                    for j in range(2, (n-1)//i+1):
+                        res[i*j] = False
+            return sum(res)</code></pre>
+</div>
+<div id="ugly-number" class="section level2">
+<h2>263. Ugly Number</h2>
+<p><a href="https://leetcode.com/problems/ugly-number/">Link to the problem</a></p>
+<p><strong>Analysis:</strong></p>
+<ol style="list-style-type: decimal">
+<li>If <code>num</code> is strictly greater than 1, we keep trying to reduce it, by dividing <code>num</code> by <code>2,3,5</code>, if divisible.</li>
+<li>We use the logic variable <code>ugly</code> to track whether <code>num</code> is divisible by <code>2,3,5</code> or not.</li>
+</ol>
+<pre><code>class Solution:
+    def isUgly(self, num: int) -&gt; bool:
+        while num &gt; 1:
+            ugly = False
+            for k in [2,3,5]:
+                if num % k == 0:
+                    ugly = True
+                    num = num/k
+            if not ugly:
+                return ugly
+        return num == 1</code></pre>
+</div>
+<div id="happy-number" class="section level2">
+<h2>202. Happy Number</h2>
+<p><a href="https://leetcode.com/problems/happy-number/">Link to the problem</a></p>
+<p><strong>Analysis:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Use a list called <code>history</code> to store the history of numbers we obtain. The variable <code>tail</code> is the current last element in <code>history</code>.</p></li>
+<li><p>If <code>tail</code> is not 1, we continue the process to add numbers to <code>history</code>.</p></li>
+<li><p>Each time we add an element to <code>history</code>, we check whether this element has appeared before. If so, then we will get an infinite loop, so we stop the loop.</p></li>
+<li><p>Once we break the loop, we check whether <code>tail</code> is 1 or not. If 1, then this number is happy; otherwise, it is an unhappy number.</p></li>
+</ol>
+<pre><code>class Solution:
+    def isHappy(self, n: int) -&gt; bool:
+        history = [n]
+        tail = n
+        while tail != 1:
+            l = [int(i)**2 for i in str(tail)]
+            tail = sum(l)
+            history.append(tail)
+            if len(history) &gt; len(set(history)):
+                break
+        
+        return tail == 1</code></pre>
+</div>
+<div id="missing-number" class="section level2">
+<h2>268. Missing Number</h2>
+<p><a href="https://leetcode.com/problems/missing-number/">Link to the problem</a></p>
+<p><strong>Analysis:</strong> Sort the list first, then compare the position <code>k</code> with its value <code>nums[k]</code>.</p>
+<pre><code>class Solution:
+    def missingNumber(self, nums: List[int]) -&gt; int:
+        nums.sort()
+        for k in range(0,len(nums)):
+            if nums[k] == k:
+                k += 1
+            else:
+                break
+        return k</code></pre>
+<p>Another direct solution (kinda cheating imo):</p>
+<pre><code>class Solution:
+    def missingNumber(self, nums: List[int]) -&gt; int:
+        N = len(nums)
+        return N(N+1)/2 - sum(nums)</code></pre>
 </div>
 
 
