@@ -230,3 +230,34 @@ class Solution:
         N = len(nums)
         return N(N+1)/2 - sum(nums)
 ```
+## 171. Excel Sheet Column Number
+
+[Link to the problem](https://leetcode.com/problems/excel-sheet-column-number/)
+
+**Analysis:** First build a dictionary to indicate which number each letter in the alphabet to stand for. Then `s` in basically a number in the 26 system. We just need to transform it into a number in the decimal system.
+
+```
+class Solution:
+    def titleToNumber(self, s: str) -> int:
+        alphabet = [chr(i) for i in range(65, 91)]
+        nums = [i for i in range(1, 27)]
+        dic = dict(zip(alphabet, nums))
+        L = len(s)
+        s_list = [dic[s[i]] * (26 ** (L-1-i)) for i in range(0,L)]
+     
+        return sum(s_list)
+```
+## 169. Majority Element
+
+[Link to the problem](https://leetcode.com/problems/majority-element/)
+```
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        L = len(nums)//2
+        nums.sort()
+        for i in set(nums):
+            ind = nums.index(i)
+            if ind + L <= len(nums)-1: 
+                if nums[ind + L] == i:
+                    return i
+```
