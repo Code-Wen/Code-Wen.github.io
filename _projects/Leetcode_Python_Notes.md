@@ -79,6 +79,7 @@ class Solution:
             s[-k-1] = head
 
 ```
+
 ## 58. Length of Last Word
 
 [Link to the problem](https://leetcode.com/problems/length-of-last-word/)
@@ -128,6 +129,7 @@ class Solution:
         
         return len(set(nums)) != len(nums)
 ``` 
+
 ## 204. Count Primes
 
 [Link to the problem](https://leetcode.com/problems/count-primes/)
@@ -204,6 +206,7 @@ class Solution:
         
         return tail == 1
 ```    
+
 ## 268. Missing Number
 
 [Link to the problem](https://leetcode.com/problems/missing-number/)
@@ -230,6 +233,7 @@ class Solution:
         N = len(nums)
         return N(N+1)/2 - sum(nums)
 ```
+
 ## 171. Excel Sheet Column Number
 
 [Link to the problem](https://leetcode.com/problems/excel-sheet-column-number/)
@@ -247,9 +251,16 @@ class Solution:
      
         return sum(s_list)
 ```
+
 ## 169. Majority Element
 
 [Link to the problem](https://leetcode.com/problems/majority-element/)
+
+**Analysis:** 
+
+1. Compute `L = len(nums)//2`, which is the least number of repetitions for the majority element.
+2. Sort the list `nums`.
+3. For each element `i` in the set formed from elements in `nums`, get its index in the sorted list `ind`, then check if the `ind + L`th element is equal to `i`. If so, we captured the majority element!
 ```
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
@@ -260,4 +271,149 @@ class Solution:
             if ind + L <= len(nums)-1: 
                 if nums[ind + L] == i:
                     return i
+```
+
+## 121. Best Time to Buy and Sell Stock
+
+[Link to the problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+
+**Analysis:** 
+
+1. We use `MAX_step` to denote the maximal profit if one chooses to sell on the `k`th day. Note that this quantity can be negative.
+2. `MAX_step` at `k` can be obtained from the `MAX_step` at `k-1`: it equals the maximal value between `prices[k]-prices[k-1]`  and `MAX_step+prices[k]-prices[k-1])`.
+3. In the `for` loop, we inductively update the current max profit if one chooses to sell the stock on the `1<=i<=k` day.
+
+
+```
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        MAX=0
+        MAX_step=0
+        L=len(prices)
+        if L>=2:
+            for k in range(1, L):
+                MAX_step = max(prices[k]-prices[k-1], MAX_step+prices[k]-prices[k-1]) 
+                MAX=max(MAX, MAX_step)
+        
+        return MAX
+```
+## 122. Best Time to Buy and Sell Stock II
+
+[Link to the problem](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+
+**Analysis:** Now we allow multiply transactions, this will lead to different analysis.
+
+1. We use `P` to denote the total profit, `buy` the last buy date, and `sell` the last sell date.
+2. If the next day price is lower or equal to the price of the previous day, the `buy` date will move forward, to generate more profit. `buy` will stop move forward once positive profit is possible, that is, `prices[buy+1] > prices[buy]`.
+3. Once `buy` is fixed, we consider `sell`. First set `sell = buy + 1` (recall that we will always have prices[sell] > prices[buy], due to how we work with `buy` in the previous step). `sell` will move forward if the price keeps increasing strictly. Once the price stops to increase strictly, `sell` stops moving forward.
+4. Once we obtain `sell` and `buy` for the next transaction, we update the profit by `P=P+prices[sell]-prices[buy]`.
+
+```
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+            P = 0  #profit
+            buy = 0  #buy date
+            sell = 0  #sell date
+            L = len(prices)
+            while buy < L-1:
+                
+                if prices[buy+1] <= prices[buy]:
+                    buy += 1
+                else:
+                    sell = buy + 1
+                    while sell < L-1 and prices[sell+1] > prices[sell]:
+                        sell += 1
+                    P = P + prices[sell]-prices[buy]
+                    buy = sell + 1
+            
+            return P
+```
+## 198. House Robber
+
+[Link to the problem](https://leetcode.com/problems/house-robber/)
+```
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        last, now = 0, 0
+        
+        for i in nums: last, now = now, max(last + i, now)
+                
+        return now
+```
+## 219. Contains Duplicate II
+
+[Link to the problem](https://leetcode.com/problems/contains-duplicate-ii/)
+
+**Analysis:** 
+
+1. The idea is very similar to Problem 217. We just need to check that whether any chunk of length `k+1` contains duplicates.
+2. Instead of use `set()` to convert a chunk of the list into a set, we use a little trick here: first we find the set from the first chunk. Then as we move to the right, we remove the first element `nums[step-1]` from the set, and then add the next element `nums[step+k]`  to the set.
+
+```
+class Solution:
+    def containsNearbyDuplicate(self, nums: List[int], k: int) -> bool:
+        L = len(nums)
+        if L <= 1 or k == 0:
+            return False
+        elif L <= k+1:
+            return len(set(nums)) != L
+        else:
+            s = set(nums[0:k+1])
+            if len(s) != k+1:
+                return True
+            for step in range(1, L-k):
+                s.remove(nums[step-1])
+                s.add(nums[step+k])
+                if len(s) != k+1:
+                    return True
+           
+                    
+            return False
+```
+
+## 172. Factorial Trailing Zeroes
+
+**Analysis:** It is the same as count the exponent of 5 in the prime factorization of n-factorial. We first see how many numbers from 1 to n are divisible by 5 : `n//5`. For the numbers which can be divided by 25, we have to count them twice, the first time is already included in the previous step, so we need to add how many numbers can be divided by 25, which can be obtained by `(n//5)//5`. We continue until the remainder is 0.
+ 
+```
+class Solution:
+    def trailingZeroes(self, n: int) -> int:
+        if n == 0:
+            return 0
+        else:
+            k=0
+            while n > 0:
+                k += n//5
+                n = n//5
+            return k
+```
+## 168. Excel Sheet Column Title
+
+[Link to the problem](https://leetcode.com/problems/excel-sheet-column-title/)
+
+```
+class Solution:
+    def convertToTitle(self, n: int) -> str:
+        a = [chr(i) for i in range(65,91)]
+        b = [i for i in range(0, 26)]
+        order = dict(zip(b,a))
+        s = ''
+        while n > 0:
+            s = order[(n-1)%26] + s
+            n = (n-1)//26
+        return s
+```
+## 167. Two Sum II - Input array is sorted
+
+[Link to the problem](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+
+```
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        s = set([])
+        for i in range(len(numbers)):
+            if target-numbers[i] in s:
+                return [numbers.index(target-numbers[i])+1,i+1]
+            else:
+                s.add(numbers[i])
 ```
