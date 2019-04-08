@@ -1,3 +1,9 @@
+---
+title: "Notes on Kaggle Elo Competition"
+excerpt: "My first ever Kaggle Competition! It was lots of fun!"
+collection: projects
+---
+
 # 1. Data Pre-Processing
 
 ## 1.1 Load the data
@@ -654,7 +660,3 @@ if (! dir.exists('output') ) dir.create('output')
 fwrite(x = pred_dt, file = 'output/sub_7.csv')
 ```
 
-# 4. Discussion
-
-1. This is my first-ever Kaggle competition. It was lots of fun! There are so much information hidden in large data sets. We are like adventurers looking for surprises.
-2. Sometimes there are so many features involved, to select a good machine learning model is difficult, but even more so if we want to interpret the model.
