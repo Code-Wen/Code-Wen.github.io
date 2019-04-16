@@ -1,3 +1,9 @@
+---
+title: "Exploratory Data Analysis and Two Regression Algorithms in R"
+excerpt: "Understanding service time and quality score using linear regression and random forest"
+collection: projects
+---
+
 Introduction
 ============
 
@@ -111,7 +117,7 @@ ggplot(data = call, mapping = aes(x = week)) +
   geom_histogram(binwidth = 0.3)
 ```
 
-![](call_sample_files/figure-markdown_github/explore-1.png)
+![](images/call_sample_files/figure-markdown_github/explore-1.png)
 
 ``` r
 # Service Time Histogram
@@ -121,7 +127,7 @@ ggplot(data = call, mapping = aes(x = service_time)) +
 
     ## Warning: Removed 9 rows containing non-finite values (stat_bin).
 
-![](call_sample_files/figure-markdown_github/explore-2.png)
+![](images/call_sample_files/figure-markdown_github/explore-2.png)
 
 ``` r
 # Quality Score Histogram
@@ -131,7 +137,7 @@ ggplot(data = call, mapping = aes(x = quality_score)) +
 
     ## Warning: Removed 6 rows containing non-finite values (stat_bin).
 
-![](call_sample_files/figure-markdown_github/explore-3.png)
+![](images/call_sample_files/figure-markdown_github/explore-3.png)
 
 From the visualization above, there is a good and even distribution of data points across sites, clients, and agents. But some supervisors have very few calls associated with them, which may be due to recording errors. The distributions of week information and quality score look fine, but service time was distributed quite sparsely around several means. This could suggest that some factors have a strong effect in determining the service times, e.g., different sites have quite different service times due to logistics etc.
 
@@ -142,19 +148,19 @@ A breakdown of the service time metric over sites and clients shows that indeed 
 
     ## Warning: Removed 9 rows containing non-finite values (stat_bin).
 
-![](call_sample_files/figure-markdown_github/group_plot-1.png)
+![](images/call_sample_files/figure-markdown_github/group_plot-1.png)
 
     ## Warning: Removed 9 rows containing non-finite values (stat_bin).
 
-![](call_sample_files/figure-markdown_github/group_plot-2.png)
+![](images/call_sample_files/figure-markdown_github/group_plot-2.png)
 
 Both the service time and quality score metrics are plotted over the site and client information to give us a better sense of what might come into play.
 
-![](call_sample_files/figure-markdown_github/group_summary-1.png)
+![](images/call_sample_files/figure-markdown_github/group_summary-1.png)
 
 The above figure shows that service with client A has a higher quality score across sites, especially at the North and South sites.
 
-![](call_sample_files/figure-markdown_github/unnamed-chunk-1-1.png)
+![](images/call_sample_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 From the above figure, different sites indeed have different service times, with little variation. The East site is an anomaly in that their service time depends on the client being serviced. The barely visible error bars (standard error) suggests that the site and client information can predict the service times fairly well.
 
@@ -434,7 +440,7 @@ An stepwise regression is performed to see what model would be chosen.
 
 Again, agent is selected in the model. But since agent could lead to overfit, the previous model of week and client is retained. A bar plot of quality score over week and client shows that overall client A has a higher quality score. The score also goes up over week for both clients. But the overall fit is far less ideal compared to the service time prediction. Additional factors need to be considered to achieve a better prediction.
 
-![](call_sample_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](images/call_sample_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Data Modeling - Random Forest
 =============================
@@ -451,19 +457,19 @@ Predicting Service Time
 
 ### Model Building
 
-![](call_sample_files/figure-markdown_github/time_rf1-1.png)
+![](images/call_sample_files/figure-markdown_github/time_rf1-1.png)
 
 The error rate quickly plateaued near 10 trees.
 
 ### Variable Importance
 
-![](call_sample_files/figure-markdown_github/time_rf2-1.png)
+![](images/call_sample_files/figure-markdown_github/time_rf2-1.png)
 
 The above visualization shows that supervisor has the most power predicting service time, followed by agent. Site and client information come next in their predictive power. This confirms our analysis in the linear regression section.
 
 ### Prediction
 
-![](call_sample_files/figure-markdown_github/time_rf3-1.png)
+![](images/call_sample_files/figure-markdown_github/time_rf3-1.png)
 
 The correlation between data and prediction is 0.94, suggesting that the model can predict the service time really well.
 
@@ -472,19 +478,19 @@ Predicting Quality Score
 
 ### Model Building
 
-![](call_sample_files/figure-markdown_github/quality_rf1-1.png)
+![](images/call_sample_files/figure-markdown_github/quality_rf1-1.png)
 
 The error rate plateaued near 40 trees.
 
 ### Variable Importance
 
-![](call_sample_files/figure-markdown_github/quality_rf2-1.png)
+![](images/call_sample_files/figure-markdown_github/quality_rf2-1.png)
 
 The above visualization shows that agent has the most power predicting quality score, followed by week, then supervisor, service time, and client. Agent and supervisor can again be ignored for overfit concerns. But it first surprises me that service time comes as more important than client information, contrary to what we see in the linear regression section. This could be due to that service time is perfectly predicted by site and client information, so that it contains more information than client alone. Since service time correlates with client information, it can be included in predicting quality score in a predictive algorithm, but should not be included in a linear regression model.
 
 ### Prediction
 
-![](call_sample_files/figure-markdown_github/quality_rf3-1.png)
+![](images/call_sample_files/figure-markdown_github/quality_rf3-1.png)
 
 The correlation between data and prediction is 0.59, suggesting that the model can predict the quality score relatively well but not ideal.
 
