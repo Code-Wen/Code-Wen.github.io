@@ -1,0 +1,465 @@
+---
+title: 'R Practice: Understanding Service Time and Quality Score'
+author: "Chenxu Wen, chenxu.wen.math@gmail.com"
+date: "April 15, 2019"
+output:
+  html_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+  
+highlight: tango
+fig_width: 7
+theme: readable
+fig_height: 4.5
+---
+
+# Introduction
+
+This exercise details my analysis done with two important metrics in a data sample: the service time and the quality score. Factors such as sites, clients, supervisors, and agents are considered as to how they relate to the two business metrics.
+
+There are three parts to my analysis: data exploration, data preprocessing, and data modeling.
+
+# Data Exploration
+
+## Data Import
+```{r setup, echo=FALSE, message = FALSE}
+library(randomForest)
+library(car)
+library(Hmisc)
+library(ggplot2)
+library(tidyverse)
+options(digits=2)
+call = read_csv('Call Sample.csv')
+# replace spaces in column names with underscore and convert to lower case
+colnames(call) = tolower(gsub(' ', '', sub(' ','_',colnames(call))))
+```
+
+
+```{r renaming, echo=FALSE, eval=TRUE, message=FALSE}
+call = call %>%
+  mutate( site = case_when(
+    call$site == 'East' ~ 'E',
+    call$site == 'South' ~ 'S',
+    call$site == 'North' ~ 'N',
+  ))
+```
+
+
+After requesting R libraries, the data set is imported into R as a tibble, with the columns renamed for ease of reference.
+
+``` {r import, echo = FALSE, message = FALSE}
+
+# a quick look at the the data
+print(head(call))
+```
+
+Let's first take a look at the summary of the data: 
+
+``` {r glance, echo = FALSE, message = FALSE}
+
+summary(call)
+
+```
+
+With just 240 rows and 7 columns, this is a fairly small data set. There are a few things that immediately stick out: 
+
+1. There are two quantative metrics: service time and quality score. The rest of the features are categorical, including site, client, supervisor, and agent agent.
+
+2. Feature selection should be done with caution since some of the factors may be perfectly collinear or even repetitive, e.g., supervisors and agents are nested within site.
+
+## Data Distribution
+
+Now explore each column in the data by showing a table of each categorical variable and a histogram of each numerical variable.
+
+``` {r explore, message= FALSE}
+# site Frequency Table
+table(call$site)
+# client Frequency Table
+table(call$client)
+# supervisor Frequency Table
+table(call$supervisor)
+# agent Frequency Table
+table(call$agent)
+# week Information Histogram
+ggplot(data = call, mapping = aes(x = week)) +
+  geom_histogram(binwidth = 0.3)
+# Service Time Histogram
+ggplot(data = call, mapping = aes(x = service_time)) +
+  geom_histogram(binwidth = 1)
+# Quality Score Histogram
+ggplot(data = call, mapping = aes(x = quality_score)) +
+  geom_histogram(binwidth = 0.1)
+```
+
+From the visualization above, there is a good and even distribution of data points across sites, clients, and agents. But some supervisors have very few calls associated with them, which may be due to recording errors. The distributions of week information and quality score look fine, but service time was distributed quite sparsely around several means. This could suggest that some factors have a strong effect in determining the service times, e.g., different sites have quite different service times due to logistics etc. 
+
+## Data Means
+
+A breakdown of the service time metric over sites and clients shows that indeed very different service times are associatied with different sites, but not different clients.
+
+``` {r group_plot, echo=FALSE,message= FALSE}
+# break down service time over sites
+ggplot(data = call, mapping = aes(x = service_time, fill = site)) +
+  geom_histogram(binwidth = 1)
+# break down service time over clients
+ggplot(data = call, mapping = aes(x = service_time, fill = client)) +
+  geom_histogram(binwidth = 1)
+
+```
+
+Both the service time and quality score metrics are plotted over the site and client information to give us a better sense of what might come into play.
+
+``` {r group_summary, echo=FALSE, message= FALSE}
+grp_summary = call %>% group_by(site, client) %>%
+              summarise(quality = mean(quality_score, na.rm = TRUE), 
+                      time = mean(service_time, na.rm = TRUE),
+                      count_quality = sum(!is.na(quality_score)),
+                      count_time = sum(!is.na(service_time)),
+                      se_quality = sd(quality_score, na.rm = TRUE)/sqrt(count_quality),
+                      se_time = sd(service_time, na.rm = TRUE)/sqrt(count_time)
+                      )
+ggplot(grp_summary, aes(x=site, y=quality, fill=client)) + 
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_errorbar(aes(ymin=quality-se_quality, ymax=quality+se_quality),
+                  width=.2, position=position_dodge(.9)) + 
+                  ylab('Quality Score') + xlab('Site')
+```
+
+The above figure shows that service with client A has a higher quality score across sites, especially at the North and South sites. 
+
+``` {r echo=FALSE, message= FALSE}
+ggplot(grp_summary, aes(x=site, y=time, fill=client)) + 
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_errorbar(aes(ymin=time-se_time, ymax=time+se_time),
+                  width=.2, position=position_dodge(.9)) + 
+                  ylab('Service Time') + xlab('Site')
+```
+
+From the above figure, different sites indeed have different service times, with little variation. The East site is an anomaly in that their service time depends on the client being serviced. The barely visible error bars (standard error) suggests that the site and client information can predict the service times fairly well.
+
+# Data Preprocessing
+
+## Recording Errors
+
+A closer look at the supervisor's names revealed that some names were spelled wrong (e.g., 'Sarah' as 'SARA'), while some were recorded without proper case (e.g., 'Michael' as 'MICHAEL'). This was corrected so that now each supervisor has 20 entries in the data.
+
+Here's a table of the corrected supervisor names.
+
+```{r recoding_supervisor_names, echo=FALSE, message=FALSE}
+call = call %>%
+  mutate( supervisorN = case_when(
+    call$supervisor == 'ADREEW' ~ 'Andrew',
+    call$supervisor == 'JOHNATHAN' ~ 'John',
+    call$supervisor == 'JORRGE' ~ 'Jorge',
+    call$supervisor == 'SARA' ~ 'Sarah',
+    TRUE ~ capitalize(tolower(call$supervisor))
+  ))
+table(call$supervisorN)
+
+## output the corrected data to a new csv file for powerBI visualization
+write_csv(call,path = 'new_call_sample.csv')
+```
+
+## Missing Data
+
+First, get an idea of the amount of data missing, the number of missing data points and incomplete data rows. 
+
+```{r missing, echo=FALSE, message= FALSE}
+library(mice)
+n_missing = sum(is.na(call))
+n_total = nrow(call)*ncol(call)
+print(paste('Number of missing data points: ',n_missing,sep=''))
+# get the indices of missing data
+ind_missing = which(is.na(call),arr.ind = T)
+nrow_incomp = length(unique(ind_missing[,1]))
+table_missing = table(ind_missing[,2])
+names(table_missing) = paste('column_',names(table_missing),sep='')
+# print the number of data points missing in each column
+print('Number of missing data points per column:')
+print(table_missing)
+```
+```{r echo=FALSE, message= FALSE, warning=FALSE}
+# multivariate imputation used here, other imputation alternatives: DMwR, rpart, or Hmisc
+tmp = mice(call[, !names(call) %in% "supervisor"], method="rf",printFlag = F)
+call_old = call # save the original data in call_old
+call = complete(tmp)
+```
+
+It turned out that there were `r n_missing` out of `r n_total` data points (`r n_missing/n_total*100`%) missing, which is not a big deal. But with `r nrow_incomp` out of `r nrow(call)` rows (`r nrow_incomp/nrow(call)*100`%) incomplete, this is a bit concerning. Since all missing values were from the two most important features: quality score and service time, a quick multivariate imputation using the *mice* package was completed.
+
+## Data Conversion
+
+Lastly, the data was prepared for modeling by converting character variables to factors.
+``` {r conversion, echo=FALSE, message= FALSE}
+call$site = factor(call$site)
+call$client = factor(call$client)
+call$supervisorN = factor(call$supervisorN)
+call$agent = factor(call$agent)
+```
+
+# Data Modeling - Linear Regression
+
+Both service time and quality score are analyzed as outcome metrics in this section. For each analysis there are two parts. First, assumptions are tested, focusing on the multicollinearity assumption based on data exploration. Second, variables are selected based on single-predictor model performance as well as stepwise model selection.
+
+## Predicting Service Time
+
+### Assumption Test 
+
+Based on the Data Exploration section, the multicollinearity assumption is a potential concern for this data set, especially among the several categorical variable. Thus Chi-square test is performed to test the multicollinearity assumption. 
+
+``` {r lm, echo=FALSE, message= FALSE, warning=FALSE}
+vars = c('site','client','supervisorN','agent')
+for (i in  2:4) {
+  for (j in 1:(i-1)) {
+    chi_test = chisq.test(call[,vars[i]],call[,vars[j]])
+    if (chi_test$p.value > 0.5) {
+      print('These two variables are not significantly correlated:')
+      print(paste(vars[i],'and',vars[j],sep=' '))
+      print(chi_test)
+    }
+  }
+}
+
+```
+The test showed that only client and site variables are independent of each other. Thus these two variables will be used to predict the service time and quality score in the linear regression model, when multiple predictors are considered.
+
+### Building Model
+
+First, one-predictor only models are considered. Service time is predicted from every other factor in the data except quality score. Presumably quality was assessed after the call, thus it was not suitable to serve as a predictor for service time.  
+
+``` {r time_lm_0, echo=FALSE, message= FALSE}
+vars = c('site','client','supervisorN','agent','week')
+adj_r_sq = array(NA,dim=length(vars),dimnames = list(vars))
+for (var_i in vars) {
+  adj_r_sq[var_i] = summary(lm(call$service_time ~ call[,var_i]))$adj.r.squared
+}
+
+print('Adjusted R Squared with Each Predictor: ')
+print(adj_r_sq)
+
+```
+
+The above adjusted R Square table showed that both supervisor and agent can alone predict the service time really well. Given that agent has `r length(unique(call$agent))` levels while supervisor has only `r length(unique(call$supervisorN))` levels, supervisor would be a good predictor to use. 
+
+Multiple regression is also considered, with site and client as predictors given the multicollinearity constraint as tested earlier, as well as the simple correlation between these two factors and the service time.
+
+``` {r time_lm_1, echo=FALSE, message= FALSE}
+time_lm_1 <- lm(service_time ~ site + client, data=call)
+anova(time_lm_1)
+
+print('Adjusted R Squared with Site and Client as Predictors: ')
+print(summary(time_lm_1)$adj.r.squared)
+```
+The result suggests that both site and client play significant roles in determining service time. However, the combined predictive power is far less ideal compared to supervisor alone as predictor. Considering the interaction seen in the bar plot visualization, an interaction term is added.
+
+``` {r time_lm_2, echo=FALSE, message= FALSE}
+time_lm_2 <- lm(service_time ~ site + client + site:client, data=call)
+anova(time_lm_2)
+
+print('Adjusted R Squared with Site, Client, and interaction as Predictors: ')
+print(summary(time_lm_2)$adj.r.squared)
+```
+
+Now the predictive power (amount of variance explained) looks much better. The result confirms what we see in the data exploration section. 
+
+### Model Selection
+
+``` {r time_lm_3, echo=FALSE, message= FALSE}
+library(MASS)
+time_lm_3 <- lm(service_time ~ ., data=call)
+step <- stepAIC(time_lm_3, direction="both")
+step$anova # display results
+```
+
+A variable-selection procedure using the stepwise regression showed that agent alone was selected as the predictor. However, given that there are many levels of agents, this could be a potential overfit. Thus agent will not be considered as a predictor.
+
+This quick linear regression showed that the service time can be perfectly predicted by the factors in this data set, with client, site, and their interaction information combined, or with supervisor information alone. 
+
+The great predicative ability of this linear regression model can potentially be used to optimize the wait time of customers by directing them to different agents based on the predicted time of each call.
+
+## Predicting Quality Score
+
+### Building Model
+
+Next, linear regression is used to predict quality scores from all other factors in the table, including service time. It is fair to imagine the quality of the call being affected by the service time.
+
+``` {r quality_lm_0, echo=FALSE, message= FALSE}
+vars = c('site','client','supervisorN','agent','week','service_time')
+adj_r_sq = array(NA,dim=length(vars),dimnames = list(vars))
+for (var_i in vars) {
+  adj_r_sq[var_i] = summary(lm(call$quality_score ~ call[,var_i]))$adj.r.squared
+}
+
+print('Adjusted R Squared with Each Predictor: ')
+print(adj_r_sq)
+```
+The above results show that site does not relate to quality score, but client and supervisor have a similar amount of correlation. Time also matters. Given that supervisor doesn't predict quality score much better than client, despite with 9 more levels, client is used along with week information to predict quality score.
+
+``` {r quality_lm_1, echo=FALSE, message= FALSE}
+quality_lm_1 <- lm(quality_score ~ week + client, data=call)
+anova(quality_lm_1)
+
+print('Adjusted R Squared with Week and Client as Predictors: ')
+print(summary(quality_lm_1)$adj.r.squared)
+```
+
+
+Client and week information do an OK job predicting quality score, but not ideal. An interactoin term is added to see if the fit could be improved.
+
+``` {r quality_lm_2, echo=FALSE, message= FALSE}
+quality_lm_2 <- lm(quality_score ~ week + client + week:client, data=call)
+anova(quality_lm_2)
+
+print('Adjusted R Squared with Week, Client, and interaction as Predictors: ')
+print(summary(quality_lm_2)$adj.r.squared)
+```
+
+No improvement observed. Thus the interaction term is not necessary. 
+
+### Model Selection
+
+An stepwise regression is performed to see what model would be chosen.
+
+``` {r quality_lm_3, echo=FALSE, message= FALSE}
+quality_lm_3 <- lm(quality_score ~ ., data=call)
+step <- stepAIC(quality_lm_3, direction="both")
+step$anova # display results
+```
+Again, agent is selected in the model. But since agent could lead to overfit, the previous model of week and client is retained. A bar plot of quality score over week and client shows that overall client A has a higher quality score. The score also goes up over week for both clients. But the overall fit is far less ideal compared to the service time prediction. Additional factors need to be considered to achieve a better prediction.
+
+``` {r echo=FALSE, message= FALSE}
+grp_summary1 = call %>% group_by(week, client) %>%
+              summarise(quality = mean(quality_score, na.rm = TRUE), 
+                      count_quality = sum(!is.na(quality_score)),
+                      se_quality = sd(quality_score, na.rm = TRUE)/sqrt(count_quality)
+                      )
+ggplot(grp_summary1, aes(x=week, y=quality, fill=client)) + 
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_errorbar(aes(ymin=quality-se_quality, ymax=quality+se_quality),
+                  width=.2, position=position_dodge(.9)) + 
+                  ylab('Quality Score') + xlab('Site')
+```
+
+# Data Modeling - Random Forest
+
+Now use random forest to predict quality score and service time from the remaining factors.
+
+## Data Splitting
+
+Half of the data were randomly drawn as the train data set and the other half as test data set.
+
+``` {r data_split, echo=FALSE, message= FALSE}
+# set seed for reproducability
+set.seed(33)
+n = nrow(call)
+train_ind = sample.int(n,n/2)
+test_ind = setdiff(c(1:n),train_ind)
+train = call[train_ind,]
+test = call[test_ind,]
+```
+
+## Predicting Service Time
+
+### Model Building
+``` {r time_rf1, echo=FALSE, message= FALSE}
+# random forest for service time
+time_rf = randomForest(service_time ~ site + client + supervisorN + agent + week,
+                                data = train,ntree=50)
+plot(time_rf)
+```
+
+The error rate quickly plateaued near 10 trees.
+
+### Variable Importance
+
+``` {r time_rf2, echo=FALSE, message= FALSE}
+# Get importance
+tmp = randomForest::importance(time_rf)
+Importance = tibble(Variable=rownames(tmp),Importance=tmp[,1])
+
+# Create a rank variable based on importance
+rImportance = Importance %>%
+  mutate(Rank = paste0('#',dense_rank(desc(Importance))))
+
+# Use ggplot2 to visualize the relative importance of variables
+ggplot(rImportance, aes(x = reorder(Variable, Importance), 
+    y = Importance)) + geom_bar(stat='identity') + 
+    geom_text(aes(x = Variable, y = 0.5, label = Rank),
+    hjust=0, vjust=0.55, size = 4, colour = 'white') +
+    labs(x = 'Variables') + coord_flip() 
+```
+
+The above visualization shows that supervisor has the most power predicting service time, followed by agent. Site and client information come next in their predictive power. This confirms our analysis in the linear regression section.
+
+### Prediction
+
+``` {r time_rf3, echo=FALSE, message= FALSE,fig.width=5,fig.height=5}
+# Predict using the test set
+prediction <- predict(time_rf, test)
+
+# visualize the prediction by plotting a scatterplot of prediction against data
+ggplot(data=NULL,aes(x = test$service_time, 
+    y = prediction)) + geom_point(shape=1) + 
+    geom_smooth(method=lm) + labs(x='Data',y='Prediction') +
+    xlim(c(400,550)) + ylim(c(400,550))
+```
+
+The correlation between data and prediction is `r cor(test$service_time,prediction)`, suggesting that the model can predict the service time really well.
+
+## Predicting Quality Score
+
+### Model Building
+``` {r quality_rf1, echo=FALSE, message= FALSE}
+# random forest for quality score
+quality_rf = randomForest(quality_score ~ site + client + supervisorN + agent + week + service_time,
+                                data = train,ntree=50)
+plot(quality_rf)
+```
+
+The error rate plateaued near 40 trees.
+
+### Variable Importance
+
+``` {r quality_rf2, echo=FALSE, message= FALSE}
+# Get importance
+tmp = randomForest::importance(quality_rf)
+Importance = tibble(Variable=rownames(tmp),Importance=tmp[,1])
+
+# Create a rank variable based on importance
+rImportance = Importance %>%
+  mutate(Rank = paste0('#',dense_rank(desc(Importance))))
+
+# Use ggplot2 to visualize the relative importance of variables
+ggplot(rImportance, aes(x = reorder(Variable, Importance), 
+    y = Importance)) + geom_bar(stat='identity') + 
+    geom_text(aes(x = Variable, y = 0.5, label = Rank),
+    hjust=0, vjust=0.55, size = 4, colour = 'white') +
+    labs(x = 'Variables') + coord_flip() 
+```
+
+The above visualization shows that agent has the most power predicting quality score, followed by week, then supervisor, service time, and client. Agent and supervisor can again be ignored for overfit concerns. But it first surprises me that service time comes as more important than client information, contrary to what we see in the linear regression section. This could be due to that service time is perfectly predicted by site and client information, so that it contains more information than client alone. Since service time correlates with client information, it can be included in predicting quality score in a predictive algorithm, but should not be included in a linear regression model.
+
+### Prediction
+
+``` {r quality_rf3, echo=FALSE, message= FALSE,fig.width=5,fig.height=5}
+# Predict using the test set
+prediction <- predict(quality_rf, test)
+
+# visualize the prediction by plotting a scatterplot of prediction against data
+ggplot(data=NULL,aes(x = test$quality_score, 
+    y = prediction)) + geom_point(shape=1) + 
+    geom_smooth(method=lm) + labs(x='Data',y='Prediction') +
+    xlim(c(4,10)) + ylim(c(4,10))
+```
+
+The correlation between data and prediction is `r cor(test$quality_score,prediction)`, suggesting that the model can predict the quality score relatively well but not ideal.
+
+# Conclusion
+
+1. The service time metric is well predicted by site and client information. The East site would be an interesting place to interview to understand the factors that affect this metric, as their service time is at both ends of the spectrum. On the one hand, they do the best job with client B in keeping down service times. Their input on how to keep it down could potentially be useful for other sites. On the other hand, their service time with client A is really high. Thus it would be worthwhile to understand the causes.
+
+2. The quality score metric is less well understood compared to the service time metric. The client and week information can do an OK job explaining the variance in quality score, but far from ideal. Thus more factors should be included if a better explaining and predicting power is desired. Client A is associated with higher quality score. It would be useful to know whether this is due to quality measurement or if client A is more happy with the service overall. Also, quality score goes up over time. One good question to ask is what changes over time contributed to the increase.
+
+3. Individual supervisor and agent performance is not analyzed in this report since this report is more about understanding the big picture, or stable factors behind the two important business metrics. Individual performance can be seen in the Power BI dashboard presentation.
