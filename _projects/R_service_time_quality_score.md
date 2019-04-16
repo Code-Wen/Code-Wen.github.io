@@ -1,6 +1,6 @@
 ---
 title: "Exploratory Data Analysis and Two Regression Algorithms in R"
-excerpt: "Understanding service time and quality score using linear regression and random forest"
+excerpt: "Understanding service time and quality score using linear regression and random forest."
 collection: projects
 ---
 
