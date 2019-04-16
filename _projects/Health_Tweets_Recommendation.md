@@ -1,6 +1,6 @@
 ---
-title: "Health Tweets Recommendation"
-excerpt: "Using NLP techniques, I build a recommendation system for health related tweets."
+title: "Using NLP to Recommend Health Tweets"
+excerpt: "Using Natural Language Processing techniques, I build a recommendation system for health related tweets."
 collection: projects
 ---
 

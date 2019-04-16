@@ -1,5 +1,5 @@
 ---
-title: "Notes on Kaggle Elo Competition"
+title: "Using EXGboost to Predict Elo Loyalty"
 excerpt: "My first ever Kaggle Competition! It was lots of fun!"
 collection: projects
 ---
