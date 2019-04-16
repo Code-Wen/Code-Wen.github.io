@@ -563,7 +563,7 @@ sns.distplot(data.yearsExperience, kde= False, bins=25)
 
 
 
-![png](/images/indeed_salary_prediction/output_24_1.png)
+![png](/images/salary_prediction/output_24_1.png)
 
 
 
@@ -580,7 +580,7 @@ sns.distplot(data.milesFromMetropolis, kde = False)
 
 
 
-![png](/images/indeed_salary_prediction/output_25_1.png)
+![png](/images/salary_prediction/output_25_1.png)
 
 
 The data on **years of experience** and **mile from metropolis** seem reasonable. Both the mean and median years of experience required are about 12 years, with a min of 0 and a max of 24. Both the mean and the median number of miles from metropolis are about 50 miles, with a min of 0 and a max of 99. The values are almost evenly distributed across the range for both variables. Thus there seem to be no apparent outliers.
@@ -833,7 +833,7 @@ sns.distplot(target.salary)
 
 
 
-![png](/images/indeed_salary_prediction/output_32_1.png)
+![png](/images/salary_prediction/output_32_1.png)
 
 
 The description of categorical values shows that we are working with a fairly clean dataset. Of all the jobs posts included, there are only 63 companies, 8 job types, 9 majors, and 7 industries involoved. The jobs are fairly evenly distributed across companies, industry, degree, and job type. The only exception is major, with a lot of jobs not specifying a required major. The outcome variable is relatively normally distributed, slightly positively skewed. Since the skewness is only slight, we'll leave the outcome variable as it.
@@ -904,7 +904,7 @@ grid = grid.map_diag(sns.distplot, kde = False)
 ```
 
 
-![png](/images/indeed_salary_prediction/output_40_0.png)
+![png](/images/salary_prediction/output_40_0.png)
 
 
 From the plots above, we can see that the data is fairly evenly distributed across the category levels for both categorical and numeric features. The only exception is the *major* feature, where the *NONE* level is very frequent. 
@@ -1306,7 +1306,7 @@ rf_best.varimp_plot()
 ```
 
 
-![png](/images/indeed_salary_prediction/output_53_0.png)
+![png](/images/salary_prediction/output_53_0.png)
 
 
 ### Output Export <a name="output"></a>
