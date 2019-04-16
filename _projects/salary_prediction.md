@@ -5,7 +5,7 @@ collection: projects
 ---
 
 
-# Predicting Salaries for Job Postings
+
 
 _Chenxu Wen, chenxu.wen.math@gmail.com_
 

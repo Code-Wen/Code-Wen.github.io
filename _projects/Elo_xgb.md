@@ -1,5 +1,5 @@
 ---
-title: "Using XGBoost to Predict Elo Loyalty"
+title: "Using XGBoost to Predict Elo Customer Loyalty"
 excerpt: "My first ever Kaggle Competition! It was lots of fun!"
 collection: projects
 ---
