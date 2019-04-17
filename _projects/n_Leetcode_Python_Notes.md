@@ -1,6 +1,6 @@
 ---
-title: "Leetcode Algorithm Questions with Solutions in Python 3"
-excerpt: "Algorithmic thinking is a crucial component in every profession that involves coding, including data science. Here I am documenting my solutions to Leetcode problems in Python 3, in hope that it would be helpful to anyone who is interested."
+title: "Leetcode Algorithm Questions in Python"
+excerpt: "A good way of learning is through practice. This is my log of practicing Leetcode problems in Python."
 collection: projects
 ---
 
@@ -416,4 +416,248 @@ class Solution:
                 return [numbers.index(target-numbers[i])+1,i+1]
             else:
                 s.add(numbers[i])
+```
+
+## 3. Longest Substring Without Repeating Characters (M)
+
+**Analysis:** `s_n` is the longest substring without repeating characters which ends at the `n`th position. `L_n = len(s_n)` and `L` is the current maximal length.  
+
+```
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        L = 0
+        s_n = ''
+        L_n = 0
+        dic = set([])
+        if len(s) == 0:
+            return L
+        else:
+            for n in range(len(s)):
+                if s[n] in dic:
+                    s_n = s_n[s_n.index(s[n])+1: ]+s[n]
+                    dic = set(s_n)
+                    L_n = len(dic)
+                else:
+                    s_n = s_n + s[n]
+                    dic.add(s[n])
+                    L_n += 1
+                    if L_n > L:
+                        L = L_n
+            return L
+```
+## 4. Median of Two Sorted Arrays (H)
+
+For a detailed explanation of the solution, see https://leetcode.com/problems/median-of-two-sorted-arrays/discuss/2481/Share-my-O(log(min(mn))-solution-with-explanation.
+```
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        m, n = len(nums1), len(nums2)
+        if m > n:
+            nums1, nums2, m, n = nums2, nums1, n, m
+        if n == 0:
+            raise ValueError
+
+        imin, imax, half_len = 0, m, (m + n + 1) // 2
+        while imin <= imax:
+            i = (imin + imax) // 2
+            j = half_len - i
+            if i < m and nums2[j-1] > nums1[i]:
+                # i is too small, must increase it
+                imin = i + 1
+            elif i > 0 and nums1[i-1] > nums2[j]:
+                # i is too big, must decrease it
+                imax = i - 1
+            else:
+                # i is perfect
+
+                if i == 0: 
+                    max_of_left = nums2[j-1]
+                elif j == 0: 
+                    max_of_left = nums1[i-1]
+                else: 
+                    max_of_left = max(nums1[i-1], nums2[j-1])
+
+                if (m + n) % 2 == 1:
+                    return max_of_left
+
+                if i == m: 
+                    min_of_right = nums2[j]
+                elif j == n:
+                    min_of_right = nums1[i]
+                else:
+                    min_of_right = min(nums1[i], nums2[j])
+
+                return float((max_of_left + min_of_right) / 2)
+
+```
+## 21. Merge Two Sorted Lists
+
+[Link](https://leetcode.com/problems/merge-two-sorted-lists/)
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        s = ListNode(0)
+        current = s
+        
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+        else:
+            
+            while l1 and l2:
+                if l1.val < l2.val:
+                    current.next = l1
+                    current = l1
+                    l1 = l1.next
+                else:
+                    current.next = l2
+                    current = l2
+                    l2 = l2.next
+        
+        
+            if l1:
+                current.next = l1
+            elif l2: 
+                current.next = l2
+        
+        return s.next
+            
+```
+## 83. Remove Duplicates from Sorted List
+
+[Link](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        current = head
+        
+        if head:
+            next_node = head.next
+            while next_node:
+                if current.val != next_node.val:
+                    current.next = next_node
+                    current = next_node
+                    next_node = current.next
+                else:
+                    next_node = next_node.next
+            current.next = None
+            return head 
+        else:
+            return head
+```
+## 876. Middle of the Linked List
+
+[Link](https://leetcode.com/problems/middle-of-the-linked-list/)
+
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def middleNode(self, head: ListNode) -> ListNode:
+        nxt = head.next
+        current = head
+        L=1
+        while nxt:
+            nxt = nxt.next
+            L +=1
+        for i in range(L//2):
+            current = current.next
+        return current
+```
+
+## String Permutation
+
+**Problem Statement:** Given a string, write a function that uses recursion to output a list of all the possible permutations of that string.  If a character is repeated, treat each occurence as distinct, for example an input of `'xxx'` would return a list with 6 "versions" of `'xxx'`
+
+For example, given `s='abc'` the function should return `['abc', 'acb', 'bac', 'bca', 'cab', 'cba']`
+
+```
+def perm(s):
+    l = []
+    if len(s) <= 1:
+        l.append(s)
+    else:
+        for i in range(len(s)):
+            for w in perm(s[1:]):
+                l.append(s[0]+w)
+            s = s[1:]+s[0]
+    return l
+```
+
+## 141. Linked List Cycle
+
+[Link](https://leetcode.com/problems/linked-list-cycle/)
+
+The first solution is simply recording all the appeared nodes in a set, and traverse the linked list. Each step we check whether the next node is in the appeared list, if yes, then there is cycle, otherwise no cycle.
+
+```
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        appeared =set([])
+        while head:
+            if head not in appeared:
+                appeared.add(head)
+                head = head.next
+            else:
+                return True
+        return False
+```
+The second approach is to traverse the linked list in two difference paces, one is `slow` and one is `fast`. If there is a cycle, then before the fast one hit `None`, he will catch up with the slow one. 
+
+```
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        if head is None or head.next is None:
+            return False
+        else:
+            slow = head
+            fast = head.next
+            while fast.next and fast.next.next:
+                if slow == fast:
+                    return True
+                else:
+                    slow = slow.next
+                    fast = fast.next.next
+            return False
 ```
