@@ -1,6 +1,6 @@
 ---
-title: "Leetcode Algorithm Questions in Python"
-excerpt: "A good way of learning is through practice. This is my log of practicing Leetcode problems in Python."
+title: "Leetcode Algorithm Questions in Python 3"
+excerpt: "Algorithmic thinking is a crucial component in every profession that involves coding, including data science. Here I'm documenting my solutions to algorithm questions on Leetcode, in hope that it would be of help to anyone interested."
 collection: projects
 ---
 
