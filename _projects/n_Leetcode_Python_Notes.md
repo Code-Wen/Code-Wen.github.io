@@ -661,3 +661,782 @@ class Solution(object):
                     fast = fast.next.next
             return False
 ```
+## 2. Add Two Numbers
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        
+        current_value = l1.val +l2.val
+        
+        l3 = ListNode(current_value % 10)
+        head = l3
+        
+        while l1.next and l2.next:
+            
+            l1 = l1.next
+            l2 = l2.next
+            
+            
+            if current_value > 9:
+                
+                next_value = l1.val + l2.val + 1
+            else:
+                next_value = l1.val + l2.val
+            
+            current_value = next_value
+            l3.next = ListNode(current_value % 10)
+            l3 = l3.next
+        
+        while l1.next:
+            l1 = l1.next
+            
+            if current_value > 9:
+                
+                next_value = l1.val + 1
+            else:
+                next_value = l1.val 
+            
+            current_value = next_value
+            l3.next = ListNode(current_value % 10)
+            l3 = l3.next
+        
+        
+        while l2.next:
+            l2 = l2.next
+            
+            if current_value > 9:
+                
+                next_value = l2.val + 1
+            else:
+                next_value = l2.val 
+            
+            current_value = next_value
+            l3.next = ListNode(current_value % 10)
+            l3 = l3.next
+        
+        if current_value > 9:
+            l3.next =ListNode(1)
+            
+        return head
+        
+```
+## 125. Valid Palindrome
+
+```
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        import re
+
+        regex = re.compile('[^a-zA-Z0-9]')
+        #First parameter is the replacement, second parameter is your input string
+        s = regex.sub('', s)
+        
+        
+        
+        L= len(s)
+        i=0
+
+        if len(s) <= 1:
+            return True
+        else:
+            while i <= len(s)//2 - 1:
+                
+                if s[i].lower() == s[-(i+1)].lower():
+                    i += 1
+                else:
+                    return False
+            return True
+```
+## 680. Valid Palindrome II
+
+```
+class Solution:
+    def check(self, s:str) -> bool:
+        if len(s) <=1:
+            return True
+        else:
+            i=0
+            while i <= len(s)//2-1:
+                if s[i] != s[-i-1]:
+                    return False
+                else:
+                    i +=1
+            return True
+           
+            
+        
+    def validPalindrome(self, s: str) -> bool:
+        if len(s)<=2:
+            return True
+        
+        else:
+            i=0
+            while s[i] == s[-i-1]:
+                if i == len(s)//2 -1:
+                    return True
+                else:
+                    i+=1
+                
+            
+            if self.check(s[i+1:len(s)-i]) != True:
+                return self.check(s[i:len(s)-i-1])
+            return True
+```
+
+The same idea implemented slightly differently:
+```
+class Solution:
+   def check(self, ss):
+       # two pointers
+       # move toward center if same
+       
+       l = 0
+       r = len(ss) - 1
+           
+       while l < r:
+           if ss[l] == ss[r]:
+               l += 1
+               r -= 1
+           else:
+               return (False, l, r)
+       return (True, 0,0)
+   
+   def validPalindrome(self, s: str) -> bool:
+       
+       out, l, r = self.check(s)
+       if out:
+           return True
+       # if not the same, check if s[l+1] == s[r] or s[l] == s[r+1], del flag
+       
+       else:
+           return self.check(s[l+1:r+1])[0] or self.check(s[l: r])[0]
+```
+## 605. Can Place Flowers
+
+Using recursion:
+
+```
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        if n == 0:
+            return True
+        elif n > 0 and len(flowerbed)==0:
+            return False
+        else:
+            if flowerbed[0]==1:
+                if len(flowerbed) >2:
+                    return self.canPlaceFlowers(flowerbed[2:], n)
+                else:
+                    return False
+            if flowerbed[0] == 0:
+                if len(flowerbed) ==1:
+                    n -= 1
+                    flowerbed[0] =1
+                    return self.canPlaceFlowers(flowerbed, n)
+                if len(flowerbed) >1:
+                    if flowerbed[1] ==0:
+                        flowerbed[0] = 1
+                        n -= 1
+                        return self.canPlaceFlowers(flowerbed, n)
+                    else:
+                        if len(flowerbed) > 3:
+                            return self.canPlaceFlowers(flowerbed[3:],n)
+                        else:
+                            return False
+            
+```
+
+Using iteration:
+
+```
+class Solution:
+    def canPlaceFlowers(self, flowerbed: List[int], n: int) -> bool:
+        i = 0
+        L= len(flowerbed)
+        while i < L:
+            if n == 0:
+                return True
+            
+            if flowerbed[i] == 1:
+                i+=2
+            elif flowerbed[i] == 0 and i+1<L:
+                if flowerbed[i+1] == 1:
+                    i+=3
+                else:
+                    n-=1
+                    i+=2
+            else:
+                i+=2
+                n-=1
+        return n<=0
+```
+
+## 292. Nim Game
+
+We can actually get the general formula for the outcome: if n is divisible by 4, then the first player loses; otherwise he will win. 
+```
+class Solution:
+    def canWinNim(self, n: int) -> bool:
+        if n%4 ==0:
+            return False
+        else:
+            return True
+```
+## 283. Move Zeroes
+```
+class Solution:
+    def moveZeroes(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        i=0
+        num_zeros=0
+        j=0
+        while i<len(nums):
+            if nums[i]==0:
+                i+=1
+                num_zeros+=1
+            else:
+                if num_zeros == 0:  ## if no zeros appeared before, simply move forward
+                    i+=1
+                    j+=1
+                else:            ## otherwise,interchange 0 and the non-0 number then forward
+                    nums[j]=nums[i]
+                    nums[i]=0
+                    j+=1
+                    i+=1
+```
+## 278. First Bad Version
+
+Typical binary search
+```
+# The isBadVersion API is already defined for you.
+# @param version, an integer
+# @return a bool
+# def isBadVersion(version):
+
+class Solution:
+    def firstBadVersion(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        if isBadVersion(n) == False:
+            return "No bad!"
+        else:
+            head =1
+            tail =n
+            mid=(head+tail)//2
+            while mid>head:
+                if isBadVersion(mid):
+                    tail= mid
+                    mid=(head+tail)//2
+                else:
+                    head = mid
+                    mid=(head+tail)//2
+                    
+            if isBadVersion(mid):
+                return head
+            else:
+                return tail
+```
+## 374. Guess Number Higher or Lower
+
+Simply binary search.
+
+```
+# The guess API is already defined for you.
+# @param num, your guess
+# @return -1 if my number is lower, 1 if my number is higher, otherwise return 0
+# def guess(num):
+
+class Solution(object):
+    def guessNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        head = 1
+        tail = n
+        mid =(head+tail)//2
+        while mid>head:
+            if guess(mid)==-1:
+                tail=mid
+                mid=(head+tail)//2
+            elif  guess(mid)==1:
+                head=mid
+                mid=(head+tail)//2
+            else:
+                return mid
+        if guess(head)==0:
+            return head
+        else:
+            return tail
+```
+## 371. Sum of Two Integers
+
+A nice exercise on bit manipulations. 
+```
+class Solution:
+    def getSum(self, a: int, b: int) -> int:
+        if a == -b:
+            return 0
+        if abs(a) > abs(b):
+            a, b = b, a
+        if a < 0:
+            return -self.getSum(-a, -b)
+        while b:
+            c = a & b
+            a ^= b
+            b = c << 1
+        return a
+                
+```
+
+## 342. Power of Four
+
+If `num` is non-positive, False.
+Check if it is a power of 2: if `num & (num-1)` is 0 then we are good.
+Check if it is a power of 4: if `num%3==1`, we are good.
+
+```
+class Solution:
+    def isPowerOfFour(self, num: int) -> bool:
+        if num <= 0:
+            return False
+      
+        else:
+            
+            return  not(num & (num-1)) and num%3==1
+```
+
+## 155. Min Stack
+
+In order to retrieve the minimal value in constant time, we sacrifice space to store the minimal values at each step of the stack.
+
+```
+class MinStack:
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.val = []
+        self.min = float('inf')
+        self.min_record = []
+        
+
+    def push(self, x: int) -> None:
+        self.val.append(x)
+        if self.min > x:
+            self.min = x
+            self.min_record.append(x)
+        elif self.min == x:
+            self.min_record.append(x)
+        else:
+            self.min_record.append(self.min)
+
+    def pop(self) -> None:
+        if len(self.val)>0:
+            
+            self.val.pop()
+            self.min_record.pop()
+            if len(self.val)>0:
+                self.min = self.min_record[-1]
+            else:
+                self.min = float('inf')
+        else:
+            print ('There is nothing to pop!')
+
+    def top(self) -> int:
+        return self.val[-1]
+
+    def getMin(self) -> int:
+        return self.min
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(x)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+
+```
+## 345. Reverse Vowels of a String
+
+```
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        vowels = set(['a','e','i','o','u'])
+        L = len(s)
+        H = 0
+        T = L-1
+        temp = list(s)
+        while H < T:
+            while temp[H].lower() not in vowels and H < T:
+                H += 1
+            while temp[T].lower() not in vowels and T > H:
+                T -= 1
+            
+            if H < L and T >= 0:
+                temp[H], temp[T] = temp[T], temp[H]
+                
+                H += 1
+                T -= 1
+            
+            
+        
+        return ''.join(temp)
+```
+## 443. String Compression
+ 
+Leetcode is not working for my code. It works well on Spyder with Python 3.7 on my laptop.
+
+```
+class Solution:
+    def compress(self, chars: List[str]) -> int:
+        
+        L=len(chars) 
+        current=1           ## track the location of the modified list
+        step=1              ## step is to keep track of where we are at in the original list
+        count=1             ## track the count of continuous appearance of the letter
+        
+        ## if length is no larger than 1, no need to modify
+        
+        if L<=1:
+            return L
+            
+        else:
+            letter=chars[0]
+            while step < L:
+                ## if the next letter is the same as the current letter, count+1, step+1 and pop it out
+                
+                if letter == chars[current]:
+                    count += 1
+                    step += 1
+                    chars.pop(current)
+                
+                ## if the next letter is different with the current letter, we update the list
+                
+                else:
+                    ## if count is 1, we do not need to add a number, so just move on to the next letter
+                    
+                    if count == 1:
+                        
+                        letter = chars[current]
+                        current += 1
+                        step += 1
+                    ## if count>1, we need to add a number after the current letter, then move on the next letter
+                    
+                    else:
+                        letter = chars[current]
+                        temp = list(str(count))
+                        chars = chars[:current]+temp+chars[current:]
+                        current += len(temp)+1
+                        step += 1
+                        count = 1
+                        
+            ## edge case: after getting to the end of the list, we need to attach the count number if needed
+            
+            if count > 1:
+                temp = list(str(count))
+                chars = chars+temp
+                print(chars)
+            
+            return len(chars)
+                        
+```
+## 367. Valid Perfect Square
+
+```
+class Solution:
+    def isPerfectSquare(self, num: int) -> bool:
+        L=len(str(num))//2
+        temp=0
+        while L>=0:
+            i=9
+            
+            while (temp+i*(10**L))**2 > num:
+                i-=1
+            
+            temp=temp+i*(10**L)
+            L-=1
+            
+        return (temp**2) == num
+        
+```
+## 414. Third Maximum Number
+```
+class Solution:
+    def thirdMax(self, nums: List[int]) -> int:
+        max1=nums[0]
+        max2=float('-inf')
+        max3=float('-inf')
+        i=0
+        for i in range(len(nums)):
+            if nums[i] > max1:
+                max3, max2 = max2, max1
+                max1 = nums[i]
+                i+=1
+            elif nums[i] == max1 or nums[i]==max2 or nums[i]==max3:
+                i+=1
+            elif nums[i] < max1 and nums[i] > max2:
+                max2, max3 = nums[i], max2
+                i+=1
+            elif nums[i]< max2 and nums[i] > max3:
+                max3=nums[i]
+                i+=1
+                
+            else:
+                i+=1
+        if len(set([max1,max2,max3]))==3 and max3>float('-inf'):
+            return max3
+        else:
+            return max1
+```
+## 504. Base 7
+
+```
+
+class Solution:
+    def convertToBase7(self, num: int) -> str:
+        i=8
+        sign = 1
+        s=0
+        if num==0:
+            return '0'
+        if num<0:
+            sign = -1
+            num = -num
+            print(num)
+        while i >= 0:
+            power = 7**i
+            j=1
+            while j*power<=num:
+                j+=1
+            
+            j-=1
+            num = num-j*power
+            s+=j*(10**i)
+            i-=1
+        
+        return str(sign*s)
+        
+```
+## 383. Ransom Note
+```
+class Solution:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        
+        
+        
+        dict1=dict(zip([chr(i) for i in range(ord('a'),ord('z')+1)], [0]*26))
+        
+        L1=len(ransomNote)
+        L2=len(magazine)
+        if L1==0:
+            return True
+        else:
+            if L2==0:
+                return False
+            else:
+                i=1
+                while i<=L1:
+                    dict1[ransomNote[i-1]] += 1
+                    i+=1
+                
+                j=1
+                while j<=L2:
+                    dict1[magazine[j-1]] -=1
+                    j+=1
+                
+            if max(dict1.values()) > 0:
+                return False
+            else:
+                return True
+```
+## 541. Reverse String II
+```
+class Solution:
+    def reverseStr(self, s: str, k: int) -> str:
+        i=0
+        L=len(s)//(2*k)
+        remainder=len(s)%(2*k)
+        while i < L:
+            
+            
+            s = s[:2*k*i]+s[2*k*i:2*k*i+k][::-1]+s[2*k*i+k:]
+            i+=1
+            
+        if remainder > k:
+            s = s[:2*k*i]+s[2*k*i:2*k*i+k][::-1]+s[2*k*i+k:]
+        elif remainder > 0:
+           
+            
+            s = s[:2*k*i]+s[2*k*i:2*k*i+k][::-1]
+        
+            
+        
+        return s
+            
+```
+## 557. Reverse Words in a String III
+```
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        start=0
+        end=0
+        L=len(s)
+        if L==0:
+            return s
+        else:
+            while end < L:
+                if s[end]!=' ':
+                    end+=1
+                else:
+                    s=s[:start]+s[start:end][::-1]+s[end:]
+                    start = end+1
+                    end+=1
+                    
+            if start < L:
+                s = s[:start]+s[start:][::-1]
+```
+
+## 682. Baseball Game
+
+```
+class Solution:
+    def calPoints(self, ops: List[str]) -> int:
+        clean =[]
+        L=len(ops)
+        i=0
+        while i < L:
+            if ops[i]=='C':
+                clean.pop()
+                i+=1
+            elif ops[i]=="+":
+                clean.append(clean[-2]+clean[-1])
+                i+=1
+            elif ops[i]=='D':
+                clean.append(clean[-1]*2)
+                i+=1
+            else:
+                clean.append(int(ops[i]))
+                i+=1
+        return sum(clean)
+```
+## 633. Sum of Square Numbers
+```
+class Solution:
+    def judgeSquareSum(self, c: int) -> bool:
+        j=0
+        
+        while j**2 <= c/2:
+            if math.sqrt(c-j**2).is_integer():
+                return True
+            else:
+                j+=1
+        return False
+        
+```
+## 520. Detect Capital
+
+```
+class Solution:
+    def detectCapitalUse(self, word: str) -> bool:
+        s=set([chr(i) for i in range(ord('A'),ord('Z')+1)])
+        i=0
+        cap_num=0
+        if word[0] in s:
+            for i in range(0,len(word)):
+                if word[i] in s:
+                    cap_num+=1
+                    i+=1
+                    
+                else:
+                    i+=1
+            if cap_num==len(word) or cap_num==1:
+                return True
+            else:
+                return False
+            
+        else:
+            for i in range(0,len(word)):
+                if word[i]  in s:
+                    return False
+                else:
+                    i+=1
+            return True
+```
+## 686. Repeated String Match
+
+```
+class Solution:
+    def repeatedStringMatch(self, A: str, B: str) -> int:
+        
+        if len(set(B)-set(A))>=1:
+            return -1
+        else:
+            
+            LB=len(B)
+            A_temp =A
+            count=1
+            while len(A_temp)<LB:
+                A_temp = A_temp+A
+                count+=1
+            if B in A_temp:
+                return count
+            else:
+                A_temp += A
+                count+=1
+                if B in A_temp:
+                    return count
+                else:
+                    return -1
+```
+## 412. Fizz Buzz
+
+```
+class Solution:
+    def fizzBuzz(self, n: int) -> List[str]:
+        l=[str(i+1) for i in range(n)]
+        i1=3
+        i2=5
+        i3=15
+        while i1 < n+1:
+            l[i1-1]="Fizz"
+            i1 += 3
+        while i2 < n+1:
+            l[i2-1]='Buzz'
+            i2 += 5
+        while i3 < n+1:
+            l[i3-1]='FizzBuzz'
+            i3 += 15
+        return l
+```
+## 977. Squares of a Sorted Array
+
+__Main idea:__ Use two pointers to get the next largest square.
+```
+class Solution:
+    def sortedSquares(self, A: List[int]) -> List[int]:
+        answer = [0] * len(A)
+        l, r = 0, len(A) - 1
+        while l <= r:
+            left, right = abs(A[l]), abs(A[r])
+            if left > right:
+                answer[r - l] = left * left
+                l += 1
+            else:
+                answer[r - l] = right * right
+                r -= 1
+        return answer
+```
