@@ -1440,3 +1440,130 @@ class Solution:
                 r -= 1
         return answer
 ```
+## 970. Powerful Integers
+
+First approach is brute-force. Be aware of the edge case that either x or y is 1 and the edge case that bound is less than 2.
+
+```
+class Solution:
+    def powerfulIntegers(self, x: int, y: int, bound: int) -> List[int]:
+        s=set()
+        i,j=0,0
+        sum=2
+        x,y=max(x,y),min(x,y)
+        
+        if x==1:
+            if bound >=2:
+                return [2]
+            else:
+                return []
+        elif y==1:
+            while sum<=bound:
+                s.add(sum)
+                i+=1
+                sum=x**i + 1
+        else:
+            
+            while sum<=bound:
+                s.add(sum)
+                j+=1
+                sum=1+y**j
+
+
+            while j>=0:
+                i=1
+                sum=x**i+y**j
+                while sum<=bound:
+                    s.add(sum)
+                    sum=x**i+y**j
+                    i+=1
+                j-=1
+
+        return list(s)
+```
+
+Second approach is to record the powers of x up to bound, and the powers of y up to bound. Then add the two lists while keeping the sums which is less than or equal to the bound.
+
+```
+class Solution:
+    def powerfulIntegers(self, x: int, y: int, bound: int) -> List[int]:
+        if bound < 2:
+            return []
+        
+        
+        xpower,ypower,i,j=[],[],0,0
+        if x==1:
+            xpower=[1]
+        else:
+            while x**i<=bound:
+                xpower.append(x**i)
+                i+=1
+        
+        if y==1:
+            ypower=[1]
+        else:
+            while y**j<=bound:
+                ypower.append(y**j)
+                j+=1
+                
+        return list(set([x+y for x in xpower for y in ypower if x+y<=bound]))
+        
+```
+## 290. Word Pattern
+
+Idea: use a dictionary to keep track of the pattern. Be aware of that the unique letters in `pattern` and the unique words in the string should be the same.
+
+```
+class Solution:
+    def wordPattern(self, pattern: str, str: str) -> bool:
+        s=str.split()
+        if len(pattern)!=len(s) or len(set(pattern))!=len(set(s)):
+            return False
+        else:
+            tracking = {}
+            i=0
+            while i<len(pattern):
+                if pattern[i] not in tracking.keys():
+                    tracking[pattern[i]]=s[i]
+                    i+=1
+                else:
+                    if tracking[pattern[i]] != s[i]:
+                        return False
+                    else:
+                        i+=1
+            return True
+```
+## 645. Set Mismatch
+```
+class Solution:
+    def findErrorNums(self, nums: List[int]) -> List[int]:
+        n=len(nums)
+        missing = list(set([i+1 for i in range(n)])-set(nums))[0]
+        duplicate =  int(-n*(n+1)/2 +sum(nums)+missing)
+        return [ duplicate,missing]
+```
+
+## 287. Find the Duplicate Number
+
+This problem can be solved using the [Floyd's Tortoise and Hare](https://en.wikipedia.org/wiki/Cycle_detection) or Floyd's cycle detection algorithm. Essentially we are treating the list with duplicates as a linked list with cycles.
+
+```
+class Solution:
+    def findDuplicate(self, nums: List[int]) -> int:
+        slow=nums[0]
+        fast=nums[nums[0]]
+        
+        ## identifying whether there is cycle or not
+        
+        while slow != fast:
+            slow = nums[slow]
+            fast = nums[nums[fast]]
+        
+        ## now find the entry of the cycle, where our duplicate resides. 
+        
+        fast=0
+        while slow != fast:
+            fast = nums[fast]
+            slow = nums[slow]
+        return slow
+```
